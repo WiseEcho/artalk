@@ -9,11 +9,11 @@ export const Fetch = async (
   init?: RequestInit,
 ) => {
 
-  let json = ''
+  let json_ = ''
   let storageData = ''
   try {
-    json = window.localStorage.getItem('SECRET_TOKEN') || ''
-    storageData = JSON.parse(json).data
+    json_ = window.localStorage.getItem('SECRET_TOKEN') || ''
+    storageData = JSON.parse(json_).data
   } catch {
     // Prevent failure
   }

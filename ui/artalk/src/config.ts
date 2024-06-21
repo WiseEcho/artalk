@@ -101,7 +101,7 @@ export function convertApiOptions(conf: Partial<ArtalkConfig>, ctx?: ContextApi)
     pageKey: conf.pageKey || '',
     pageTitle: conf.pageTitle || '',
     timeout: conf.reqTimeout,
-    getApiToken: storageData || '',
+    getApiToken: () => storageData || '', // () => ctx?.get('user').getData().token
     userInfo: ctx?.get('user').checkHasBasicUserInfo()
       ? {
           name: ctx?.get('user').getData().nick,

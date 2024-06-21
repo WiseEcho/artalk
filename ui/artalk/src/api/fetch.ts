@@ -8,7 +8,16 @@ export const Fetch = async (
   input: string | URL | Request,
   init?: RequestInit,
 ) => {
-  const apiToken = opts.getApiToken || ''
+
+  let json = ''
+  let storageData = ''
+  try {
+    json = window.localStorage.getItem('SECRET_TOKEN') || ''
+    storageData = JSON.parse(json).data
+  } catch {
+    // Prevent failure
+  }
+  const apiToken = (opts.getApiToken && opts.getApiToken()) || storageData || ''
 
   const headers = new Headers({
     Authorization: apiToken ? `Bearer ${apiToken}` : '',

@@ -201,11 +201,7 @@ export default class CommentNode {
 
   /** 获取 Gravatar 头像 URL */
   public getGravatarURL() {
-    return Utils.getGravatarURL({
-      mirror: this.opts.gravatar.mirror,
-      params: this.opts.gravatar.params,
-      emailMD5: this.data.email_encrypted,
-    })
+    return this.data.avatar || 'https://oss.zhimeizhuli.com/files/images/avatar.png'
   }
 
   /** 获取评论 markdown 解析后的内容 */

@@ -116,21 +116,8 @@ func CommentList(app *core.App, router fiber.Router) {
 			Nested: !p.FlatMode,
 		})
 
-		// Get IP region
+		// Get IP region、填充头像
 		comments = findIPRegionForComments(app, comments)
-
-		// 填充评论头像
-		for i := range comments {
-			avatar := comments[i].Avatar
-			if avatar == "" {
-				avatar = "https://oss.zhimeizhuli.com/files/images/avatar.png"
-			}
-
-			if !strings.HasPrefix(avatar, "http") {
-				avatar = common.GetOpenURLByKey(avatar, app.Conf())
-			}
-			comments[i].Avatar = avatar
-		}
 		// The response data
 		resp := ResponseCommentList{
 			Comments:   comments,
@@ -162,6 +149,17 @@ func findPageData(dao *dao.Dao, pageKey string, siteName string) *entity.CookedP
 
 // Find the IP region of each comment
 func findIPRegionForComments(app *core.App, comments []entity.CookedComment) []entity.CookedComment {
+	for i := range comments {
+		avatar := comments[i].Avatar
+		if avatar == "" {
+			avatar = "https://oss.zhimeizhuli.com/files/images/avatar.png"
+		}
+
+		if !strings.HasPrefix(avatar, "http") {
+			avatar = common.GetOpenURLByKey(avatar, app.Conf())
+		}
+		comments[i].Avatar = avatar
+	}
 	if !app.Conf().IPRegion.Enabled {
 		return comments
 	}

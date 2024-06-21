@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/ArtalkJS/Artalk/internal/core"
 	"github.com/ArtalkJS/Artalk/internal/entity"
@@ -203,6 +204,16 @@ func CommentCreate(app *core.App, router fiber.Router) {
 
 // Fetch IP Region for Comment
 func fetchIPRegionForComment(app *core.App, comment entity.CookedComment) entity.CookedComment {
+	avatar := comment.Avatar
+	if avatar == "" {
+		avatar = "https://oss.zhimeizhuli.com/files/images/avatar.png"
+	}
+
+	if !strings.HasPrefix(avatar, "http") {
+		avatar = common.GetOpenURLByKey(avatar, app.Conf())
+	}
+	comment.Avatar = avatar
+
 	if app.Conf().IPRegion.Enabled {
 		if ipRegionService, err := core.AppService[*core.IPRegionService](app); err == nil {
 			comment.IPRegion = ipRegionService.Query(comment.IP)

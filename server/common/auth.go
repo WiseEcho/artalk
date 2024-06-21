@@ -48,16 +48,16 @@ var ErrTokenUserNotFound = fmt.Errorf("user not found")
 var ErrTokenInvalidFromDate = fmt.Errorf("token is invalid starting from a certain date")
 
 func GetTokenByReq(c *fiber.Ctx) string {
-	token := c.Cookies("AIASSISTANT", "")
-	if token == "" {
-		token = c.Query("token")
-	}
+	token := c.Query("token")
 	if token == "" {
 		token = c.FormValue("token")
 	}
 	if token == "" {
 		token = c.Get(fiber.HeaderAuthorization)
 		token = strings.TrimPrefix(token, "Bearer ")
+	}
+	if token == "" {
+		token = c.Cookies("AIASSISTANT", "")
 	}
 	return token
 }

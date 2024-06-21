@@ -1,0 +1,5296 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Artalk is a modern comment system based on Golang.",
+        "title": "Artalk API",
+        "contact": {
+            "name": "API Support",
+            "url": "https://artalk.js.org",
+            "email": "artalkjs@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://github.com/ArtalkJS/Artalk/blob/master/LICENSE"
+        },
+        "version": "2.0"
+    },
+    "basePath": "/api/v2",
+    "paths": {
+        "/auth/email/login": {
+            "post": {
+                "description": "Login by email with verify code (Need send email verify code first) or password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login by email",
+                "operationId": "LoginByEmail",
+                "parameters": [
+                    {
+                        "description": "The data to login",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.RequestAuthEmailLogin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseUserLogin"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/email/register": {
+            "post": {
+                "description": "Register by email and verify code (if user exists, will update user, like forget password. Need send email verify code first)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register by email",
+                "operationId": "RegisterByEmail",
+                "parameters": [
+                    {
+                        "description": "The data to register",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.RequestAuthEmailRegister"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseUserLogin"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/email/send": {
+            "post": {
+                "description": "Send email including verify code to user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Send verify email",
+                "operationId": "SendVerifyEmail",
+                "parameters": [
+                    {
+                        "description": "The data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.RequestAuthEmailSend"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/merge": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all users with same email, if there are more than one user with same email, need merge",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Check data merge",
+                "operationId": "CheckDataMerge",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseAuthDataMergeCheck"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "This function is to solve the problem of multiple users with the same email address, should be called after user login and then check, and perform data merge.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Apply data merge",
+                "operationId": "ApplyDataMerge",
+                "parameters": [
+                    {
+                        "description": "The data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.RequestAuthDataMergeApply"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseAuthDataMergeApply"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/cache/flush": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Flush all cache on the server",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cache"
+                ],
+                "summary": "Flush Cache",
+                "operationId": "FlushCache",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/cache/warm_up": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Cache warming helps you to pre-load the cache to improve the performance of the first request",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cache"
+                ],
+                "summary": "Warm-Up Cache",
+                "operationId": "WarmUpCache",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/captcha": {
+            "get": {
+                "description": "Get a base64 encoded captcha image or a HTML page to verify for user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Captcha"
+                ],
+                "summary": "Get Captcha",
+                "operationId": "GetCaptcha",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseCaptchaGet"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/captcha/status": {
+            "get": {
+                "description": "Get the status of the user's captcha verification",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Captcha"
+                ],
+                "summary": "Get Captcha Status",
+                "operationId": "GetCaptchaStatus",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseCaptchaStatus"
+                        }
+                    }
+                }
+            }
+        },
+        "/captcha/verify": {
+            "post": {
+                "description": "Verify user enters correct captcha code",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Captcha"
+                ],
+                "summary": "Verify Captcha",
+                "operationId": "VerifyCaptcha",
+                "parameters": [
+                    {
+                        "description": "The data to check",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsCaptchaVerify"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Map"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "img_data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/comments": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a list of comments by some conditions",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Get Comment List",
+                "operationId": "GetComments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The user email",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Enable flat_mode",
+                        "name": "flat_mode",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "The limit for pagination",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The username",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "The offset for pagination",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The comment page_key",
+                        "name": "page_key",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "enum": [
+                            "page",
+                            "user",
+                            "site"
+                        ],
+                        "type": "string",
+                        "description": "The scope of comments",
+                        "name": "scope",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search keywords",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The site name of your content scope",
+                        "name": "site_name",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "date_asc",
+                            "date_desc",
+                            "vote"
+                        ],
+                        "type": "string",
+                        "description": "Sort by condition",
+                        "name": "sort_by",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "all",
+                            "mentions",
+                            "mine",
+                            "pending"
+                        ],
+                        "type": "string",
+                        "description": "Message center show type",
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Only show comments by admin",
+                        "name": "view_only_admin",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseCommentList"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new comment",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Create Comment",
+                "operationId": "CreateComment",
+                "parameters": [
+                    {
+                        "description": "The comment data",
+                        "name": "comment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsCommentCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseCommentCreate"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/comments/{id}": {
+            "get": {
+                "description": "Get the detail of a comment by comment id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Get a comment",
+                "operationId": "GetComment",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The comment ID you want to get",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseCommentGet"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update a specific comment",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Update Comment",
+                "operationId": "UpdateComment",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The comment ID you want to update",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "The comment data",
+                        "name": "comment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsCommentUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseCommentUpdate"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a specific comment",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Delete Comment",
+                "operationId": "DeleteComment",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The comment ID you want to delete",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Map"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/conf": {
+            "get": {
+                "description": "Get System Configs for UI",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "System"
+                ],
+                "summary": "Get System Configs",
+                "operationId": "Conf",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.ConfData"
+                        }
+                    }
+                }
+            }
+        },
+        "/conf/auth/providers": {
+            "get": {
+                "description": "Get social login providers",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "System"
+                ],
+                "summary": "Get Social Login Providers",
+                "operationId": "GetSocialLoginProviders",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseConfAuthProviders"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/conf/domain": {
+            "get": {
+                "description": "Get Domain Info",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "System"
+                ],
+                "summary": "Get Domain Info",
+                "operationId": "GetDomain",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Domain URL",
+                        "name": "url",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseConfDomain"
+                        }
+                    }
+                }
+            }
+        },
+        "/notifies": {
+            "get": {
+                "description": "Get a list of notifies for user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notify"
+                ],
+                "summary": "Get Notifies",
+                "operationId": "GetNotifies",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The user name",
+                        "name": "name",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The user email",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseNotifyList"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/notifies/read": {
+            "post": {
+                "description": "Mark all notifies as read for user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notify"
+                ],
+                "summary": "Mark All Notifies as Read",
+                "operationId": "MarkAllNotifyRead",
+                "parameters": [
+                    {
+                        "description": "The options",
+                        "name": "options",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsNotifyReadAll"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Map"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/notifies/{comment_id}/{notify_key}": {
+            "post": {
+                "description": "Mark specific notification as read for user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notify"
+                ],
+                "summary": "Mark Notify as Read",
+                "operationId": "MarkNotifyRead",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The comment id of the notify you want to mark as read",
+                        "name": "comment_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The key of the notify",
+                        "name": "notify_key",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Map"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/pages": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a list of pages by some conditions",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Page"
+                ],
+                "summary": "Get Page List",
+                "operationId": "GetPages",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The limit for pagination",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "The offset for pagination",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The site name of your content scope",
+                        "name": "site_name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponsePageList"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/pages/fetch": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Fetch the data of all pages",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Page"
+                ],
+                "summary": "Fetch All Pages Data",
+                "operationId": "FetchAllPages",
+                "parameters": [
+                    {
+                        "description": "The options",
+                        "name": "options",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsPageFetchAll"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Map"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/pages/fetch/status": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the status of the task of fetching all pages",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Page"
+                ],
+                "summary": "Get Pages Fetch Status",
+                "operationId": "GetPageFetchStatus",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponsePageFetchStatus"
+                        }
+                    }
+                }
+            }
+        },
+        "/pages/pv": {
+            "post": {
+                "description": "Increase and get the number of page views",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Page"
+                ],
+                "summary": "Increase Page Views (PV)",
+                "operationId": "LogPv",
+                "parameters": [
+                    {
+                        "description": "The page to record pv",
+                        "name": "page",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsPagePV"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponsePagePV"
+                        }
+                    }
+                }
+            }
+        },
+        "/pages/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update a specific page",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Page"
+                ],
+                "summary": "Update Page",
+                "operationId": "UpdatePage",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The page ID you want to update",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "The page data",
+                        "name": "page",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsPageUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponsePageUpdate"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a specific page",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Page"
+                ],
+                "summary": "Delete Page",
+                "operationId": "DeletePage",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The page ID you want to delete",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Map"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/pages/{id}/fetch": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Fetch the data of a specific page",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Page"
+                ],
+                "summary": "Fetch Page Data",
+                "operationId": "FetchPage",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The page ID you want to fetch",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponsePageFetch"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/send_email": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Send an email to test the email sender",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "System"
+                ],
+                "summary": "Send Email",
+                "operationId": "SendEmail",
+                "parameters": [
+                    {
+                        "description": "The email data",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsEmailSend"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Map"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Map"
+                        }
+                    }
+                }
+            }
+        },
+        "/settings": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get settings from app config file",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "System"
+                ],
+                "summary": "Get Settings",
+                "operationId": "GetSettings",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseSettingGet"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Apply settings and restart the server",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "System"
+                ],
+                "summary": "Save and apply Settings",
+                "operationId": "ApplySettings",
+                "parameters": [
+                    {
+                        "description": "The settings",
+                        "name": "settings",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsSettingApply"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Map"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/settings/template/{locale}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get config templates in different languages for rendering the settings page in the frontend",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "System"
+                ],
+                "summary": "Get Settings Template",
+                "operationId": "GetSettingsTemplate",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The locale of the settings template you want to get",
+                        "name": "locale",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseSettingTemplate"
+                        }
+                    }
+                }
+            }
+        },
+        "/sites": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a list of sites by some conditions",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Site"
+                ],
+                "summary": "Get Site List",
+                "operationId": "GetSites",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseSiteList"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new site",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Site"
+                ],
+                "summary": "Create Site",
+                "operationId": "CreateSite",
+                "parameters": [
+                    {
+                        "description": "The site data",
+                        "name": "site",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsSiteCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseSiteCreate"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/sites/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update a specific site",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Site"
+                ],
+                "summary": "Update Site",
+                "operationId": "UpdateSite",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The site ID you want to update",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "The site data",
+                        "name": "site",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsSiteUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseSiteUpdate"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a specific site",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Site"
+                ],
+                "summary": "Site Delete",
+                "operationId": "deleteSite",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The site ID you want to delete",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Map"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/stats/{type}": {
+            "get": {
+                "description": "Get the statistics of various data analysis",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Statistic"
+                ],
+                "summary": "Statistic",
+                "operationId": "GetStats",
+                "parameters": [
+                    {
+                        "enum": [
+                            "latest_comments",
+                            "latest_pages",
+                            "pv_most_pages",
+                            "comment_most_pages",
+                            "page_pv",
+                            "site_pv",
+                            "page_comment",
+                            "site_comment",
+                            "rand_comments",
+                            "rand_pages"
+                        ],
+                        "type": "string",
+                        "description": "The type of statistics",
+                        "name": "type",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "The limit for pagination",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "multiple page keys separated by commas",
+                        "name": "page_keys",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The site name of your content scope",
+                        "name": "site_name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.JSONResult"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/transfer/export": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Export data from Artalk",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transfer"
+                ],
+                "summary": "Export Artrans",
+                "operationId": "ExportArtrans",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseTransferExport"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/transfer/import": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Import data to Artalk",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "Transfer"
+                ],
+                "summary": "Import Artrans",
+                "operationId": "ImportArtrans",
+                "parameters": [
+                    {
+                        "description": "The data to import",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsTransferImport"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/transfer/upload": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Upload a file to prepare to import",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transfer"
+                ],
+                "summary": "Upload Artrans",
+                "operationId": "UploadArtrans",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Upload file in preparation for import task",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.ResponseTransferUpload"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "filename": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/upload": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Upload file from this endpoint",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Upload"
+                ],
+                "summary": "Upload",
+                "operationId": "Upload",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Upload file",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseUpload"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get user info to prepare for login or check current user status",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Get User Info",
+                "operationId": "GetUser",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The user email",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The username",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseUserInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/user/access_token": {
+            "post": {
+                "description": "Login user by name or email",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Get Access Token",
+                "operationId": "Login",
+                "parameters": [
+                    {
+                        "description": "The user login data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsUserLogin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseUserLogin"
+                        }
+                    },
+                    "400": {
+                        "description": "Multiple users with the same email address are matched",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "need_name_select": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/user/status": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get user login status by header Authorization",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Get Login Status",
+                "operationId": "GetUserStatus",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The user email",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The username",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseUserStatus"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create User",
+                "operationId": "CreateUser",
+                "parameters": [
+                    {
+                        "description": "The user data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsUserCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseUserCreate"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update a specific user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update User",
+                "operationId": "UpdateUser",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The user ID you want to update",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "The user data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsUserUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseUserUpdate"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a specific user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Delete User",
+                "operationId": "DeleteUser",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The user ID you want to delete",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Map"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{type}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a list of users by some conditions",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get User List",
+                "operationId": "GetUsers",
+                "parameters": [
+                    {
+                        "enum": [
+                            "all",
+                            "admin",
+                            "in_conf"
+                        ],
+                        "type": "string",
+                        "description": "The type of users",
+                        "name": "type",
+                        "in": "path"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "The limit for pagination",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "The offset for pagination",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseAdminUserList"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/version": {
+            "get": {
+                "description": "Get the version of Artalk",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "System"
+                ],
+                "summary": "Get Version Info",
+                "operationId": "GetVersion",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.ApiVersionData"
+                        }
+                    }
+                }
+            }
+        },
+        "/votes/sync": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Sync the number of votes in the `comments` or `pages` data tables to keep them the same as the `votes` table",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Vote"
+                ],
+                "summary": "Sync Vote Data",
+                "operationId": "SyncVotes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Map"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/votes/{type}/{target_id}": {
+            "post": {
+                "description": "Vote for a specific comment or page",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Vote"
+                ],
+                "summary": "Vote",
+                "operationId": "Vote",
+                "parameters": [
+                    {
+                        "enum": [
+                            "comment_up",
+                            "comment_down",
+                            "page_up",
+                            "page_down"
+                        ],
+                        "type": "string",
+                        "description": "The type of vote target",
+                        "name": "type",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Target comment or page ID you want to vote for",
+                        "name": "target_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "The vote data",
+                        "name": "vote",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ParamsVote"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseVote"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/handler.Map"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "msg": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "auth.AuthProviderInfo": {
+            "type": "object",
+            "required": [
+                "icon",
+                "label",
+                "name"
+            ],
+            "properties": {
+                "icon": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "common.ApiVersionData": {
+            "type": "object",
+            "required": [
+                "app",
+                "commit_hash",
+                "version"
+            ],
+            "properties": {
+                "app": {
+                    "type": "string"
+                },
+                "commit_hash": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "common.ConfData": {
+            "type": "object",
+            "required": [
+                "frontend_conf",
+                "version"
+            ],
+            "properties": {
+                "frontend_conf": {
+                    "$ref": "#/definitions/common.Map"
+                },
+                "version": {
+                    "$ref": "#/definitions/common.ApiVersionData"
+                }
+            }
+        },
+        "common.JSONResult": {
+            "type": "object",
+            "required": [
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "data": {
+                    "description": "Data"
+                },
+                "msg": {
+                    "description": "Message",
+                    "type": "string"
+                }
+            }
+        },
+        "common.Map": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "entity.CookedComment": {
+            "type": "object",
+            "required": [
+                "badge_color",
+                "badge_name",
+                "content",
+                "content_marked",
+                "date",
+                "email_encrypted",
+                "id",
+                "ip_region",
+                "is_allow_reply",
+                "is_collapsed",
+                "is_pending",
+                "is_pinned",
+                "is_verified",
+                "link",
+                "nick",
+                "page_key",
+                "page_url",
+                "rid",
+                "site_name",
+                "ua",
+                "user_id",
+                "visible",
+                "vote_down",
+                "vote_up"
+            ],
+            "properties": {
+                "badge_color": {
+                    "type": "string"
+                },
+                "badge_name": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "content_marked": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "email_encrypted": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ip_region": {
+                    "type": "string"
+                },
+                "is_allow_reply": {
+                    "type": "boolean"
+                },
+                "is_collapsed": {
+                    "type": "boolean"
+                },
+                "is_pending": {
+                    "type": "boolean"
+                },
+                "is_pinned": {
+                    "type": "boolean"
+                },
+                "is_verified": {
+                    "type": "boolean"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "nick": {
+                    "type": "string"
+                },
+                "page_key": {
+                    "type": "string"
+                },
+                "page_url": {
+                    "type": "string"
+                },
+                "rid": {
+                    "type": "integer"
+                },
+                "site_name": {
+                    "type": "string"
+                },
+                "ua": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "visible": {
+                    "type": "boolean"
+                },
+                "vote_down": {
+                    "type": "integer"
+                },
+                "vote_up": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entity.CookedNotify": {
+            "type": "object",
+            "required": [
+                "comment_id",
+                "id",
+                "is_emailed",
+                "is_read",
+                "read_link",
+                "user_id"
+            ],
+            "properties": {
+                "comment_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_emailed": {
+                    "type": "boolean"
+                },
+                "is_read": {
+                    "type": "boolean"
+                },
+                "read_link": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entity.CookedPage": {
+            "type": "object",
+            "required": [
+                "admin_only",
+                "date",
+                "id",
+                "key",
+                "pv",
+                "site_name",
+                "title",
+                "url",
+                "vote_down",
+                "vote_up"
+            ],
+            "properties": {
+                "admin_only": {
+                    "type": "boolean"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "pv": {
+                    "type": "integer"
+                },
+                "site_name": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "vote_down": {
+                    "type": "integer"
+                },
+                "vote_up": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entity.CookedSite": {
+            "type": "object",
+            "required": [
+                "first_url",
+                "id",
+                "name",
+                "urls",
+                "urls_raw"
+            ],
+            "properties": {
+                "first_url": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "urls": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "urls_raw": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.CookedUser": {
+            "type": "object",
+            "required": [
+                "badge_color",
+                "badge_name",
+                "email",
+                "id",
+                "is_admin",
+                "link",
+                "name",
+                "receive_email"
+            ],
+            "properties": {
+                "badge_color": {
+                    "type": "string"
+                },
+                "badge_name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_admin": {
+                    "type": "boolean"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "receive_email": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "entity.CookedUserForAdmin": {
+            "type": "object",
+            "required": [
+                "badge_color",
+                "badge_name",
+                "comment_count",
+                "email",
+                "id",
+                "is_admin",
+                "is_in_conf",
+                "last_ip",
+                "last_ua",
+                "link",
+                "name",
+                "receive_email"
+            ],
+            "properties": {
+                "badge_color": {
+                    "type": "string"
+                },
+                "badge_name": {
+                    "type": "string"
+                },
+                "comment_count": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_admin": {
+                    "type": "boolean"
+                },
+                "is_in_conf": {
+                    "type": "boolean"
+                },
+                "last_ip": {
+                    "type": "string"
+                },
+                "last_ua": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "receive_email": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "handler.Map": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "handler.ParamsCaptchaVerify": {
+            "type": "object",
+            "required": [
+                "value"
+            ],
+            "properties": {
+                "value": {
+                    "description": "The captcha value to check",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ParamsCommentCreate": {
+            "type": "object",
+            "required": [
+                "content",
+                "email",
+                "name",
+                "page_key",
+                "site_name"
+            ],
+            "properties": {
+                "content": {
+                    "description": "The comment content",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "The comment email",
+                    "type": "string"
+                },
+                "link": {
+                    "description": "The comment link",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The comment name",
+                    "type": "string"
+                },
+                "page_key": {
+                    "description": "The comment page_key",
+                    "type": "string"
+                },
+                "page_title": {
+                    "description": "The comment page_title",
+                    "type": "string"
+                },
+                "rid": {
+                    "description": "The comment rid",
+                    "type": "integer"
+                },
+                "site_name": {
+                    "description": "The site name of your content scope",
+                    "type": "string"
+                },
+                "ua": {
+                    "description": "The comment ua",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ParamsCommentUpdate": {
+            "type": "object",
+            "required": [
+                "content",
+                "is_collapsed",
+                "is_pending",
+                "is_pinned",
+                "page_key",
+                "rid",
+                "site_name"
+            ],
+            "properties": {
+                "content": {
+                    "description": "The comment content",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "The comment email",
+                    "type": "string"
+                },
+                "ip": {
+                    "description": "The comment ip",
+                    "type": "string"
+                },
+                "is_collapsed": {
+                    "description": "The comment is_collapsed",
+                    "type": "boolean"
+                },
+                "is_pending": {
+                    "description": "The comment is_pending",
+                    "type": "boolean"
+                },
+                "is_pinned": {
+                    "description": "The comment is_pinned",
+                    "type": "boolean"
+                },
+                "link": {
+                    "description": "The comment link",
+                    "type": "string"
+                },
+                "nick": {
+                    "description": "The comment nick",
+                    "type": "string"
+                },
+                "page_key": {
+                    "description": "The comment page_key",
+                    "type": "string"
+                },
+                "rid": {
+                    "description": "The comment rid",
+                    "type": "integer"
+                },
+                "site_name": {
+                    "description": "The site name of your content scope",
+                    "type": "string"
+                },
+                "ua": {
+                    "description": "The comment ua",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ParamsEmailSend": {
+            "type": "object",
+            "required": [
+                "body",
+                "subject",
+                "to_addr"
+            ],
+            "properties": {
+                "body": {
+                    "description": "The body of email",
+                    "type": "string"
+                },
+                "subject": {
+                    "description": "The subject of email",
+                    "type": "string"
+                },
+                "to_addr": {
+                    "description": "The email address of the receiver",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ParamsNotifyReadAll": {
+            "type": "object",
+            "required": [
+                "email",
+                "name"
+            ],
+            "properties": {
+                "email": {
+                    "description": "The user email",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The username",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ParamsPageFetchAll": {
+            "type": "object",
+            "properties": {
+                "site_name": {
+                    "description": "If not empty, only fetch pages of this site",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ParamsPagePV": {
+            "type": "object",
+            "required": [
+                "page_key"
+            ],
+            "properties": {
+                "page_key": {
+                    "description": "The page key",
+                    "type": "string"
+                },
+                "page_title": {
+                    "description": "The page title",
+                    "type": "string"
+                },
+                "site_name": {
+                    "description": "The site name of your content scope",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ParamsPageUpdate": {
+            "type": "object",
+            "required": [
+                "admin_only",
+                "key",
+                "site_name",
+                "title"
+            ],
+            "properties": {
+                "admin_only": {
+                    "description": "Updated page admin_only option",
+                    "type": "boolean"
+                },
+                "key": {
+                    "description": "Updated page key",
+                    "type": "string"
+                },
+                "site_name": {
+                    "description": "The site name of your content scope",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "Updated page title",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ParamsSettingApply": {
+            "type": "object",
+            "required": [
+                "yaml"
+            ],
+            "properties": {
+                "yaml": {
+                    "description": "The content of the config file in YAML format",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ParamsSiteCreate": {
+            "type": "object",
+            "required": [
+                "name",
+                "urls"
+            ],
+            "properties": {
+                "name": {
+                    "description": "The site name",
+                    "type": "string"
+                },
+                "urls": {
+                    "description": "The site urls",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "handler.ParamsSiteUpdate": {
+            "type": "object",
+            "required": [
+                "name",
+                "urls"
+            ],
+            "properties": {
+                "name": {
+                    "description": "Updated site name",
+                    "type": "string"
+                },
+                "urls": {
+                    "description": "Updated site urls",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "handler.ParamsTransferImport": {
+            "type": "object",
+            "properties": {
+                "assumeyes": {
+                    "description": "Automatically answer yes for all questions",
+                    "type": "boolean"
+                },
+                "json_data": {
+                    "description": "The JSON data",
+                    "type": "string"
+                },
+                "json_file": {
+                    "description": "The JSON file path",
+                    "type": "string"
+                },
+                "target_site_name": {
+                    "description": "The target site name",
+                    "type": "string"
+                },
+                "target_site_url": {
+                    "description": "The target site url",
+                    "type": "string"
+                },
+                "url_keep_domain": {
+                    "description": "Keep domain",
+                    "type": "boolean"
+                },
+                "url_resolver": {
+                    "description": "Enable URL resolver",
+                    "type": "boolean"
+                }
+            }
+        },
+        "handler.ParamsUserCreate": {
+            "type": "object",
+            "required": [
+                "email",
+                "is_admin",
+                "name",
+                "receive_email"
+            ],
+            "properties": {
+                "badge_color": {
+                    "description": "The user badge color (hex format)",
+                    "type": "string"
+                },
+                "badge_name": {
+                    "description": "The user badge name",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "The user email",
+                    "type": "string"
+                },
+                "is_admin": {
+                    "description": "The user is an admin",
+                    "type": "boolean"
+                },
+                "link": {
+                    "description": "The user link",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The user name",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "The user password",
+                    "type": "string"
+                },
+                "receive_email": {
+                    "description": "The user receive email",
+                    "type": "boolean"
+                }
+            }
+        },
+        "handler.ParamsUserLogin": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "description": "The user email",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The username",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "The user password",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ParamsUserUpdate": {
+            "type": "object",
+            "required": [
+                "email",
+                "is_admin",
+                "name",
+                "receive_email"
+            ],
+            "properties": {
+                "badge_color": {
+                    "description": "The user badge color (hex format)",
+                    "type": "string"
+                },
+                "badge_name": {
+                    "description": "The user badge name",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "The user email",
+                    "type": "string"
+                },
+                "is_admin": {
+                    "description": "The user is an admin",
+                    "type": "boolean"
+                },
+                "link": {
+                    "description": "The user link",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The user name",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "The user password",
+                    "type": "string"
+                },
+                "receive_email": {
+                    "description": "The user receive email",
+                    "type": "boolean"
+                }
+            }
+        },
+        "handler.ParamsVote": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "description": "The user email",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The username",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.RequestAuthDataMergeApply": {
+            "type": "object",
+            "required": [
+                "user_name"
+            ],
+            "properties": {
+                "user_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.RequestAuthEmailLogin": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.RequestAuthEmailRegister": {
+            "type": "object",
+            "required": [
+                "code",
+                "email",
+                "password"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.RequestAuthEmailSend": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ResponseAdminUserList": {
+            "type": "object",
+            "required": [
+                "count",
+                "users"
+            ],
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.CookedUserForAdmin"
+                    }
+                }
+            }
+        },
+        "handler.ResponseAuthDataMergeApply": {
+            "type": "object",
+            "required": [
+                "deleted_user_count",
+                "update_comments_count",
+                "update_notifies_count",
+                "update_votes_count",
+                "user_token"
+            ],
+            "properties": {
+                "deleted_user_count": {
+                    "type": "integer"
+                },
+                "update_comments_count": {
+                    "type": "integer"
+                },
+                "update_notifies_count": {
+                    "type": "integer"
+                },
+                "update_votes_count": {
+                    "type": "integer"
+                },
+                "user_token": {
+                    "description": "Empty if login user is target user no need to re-login",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ResponseAuthDataMergeCheck": {
+            "type": "object",
+            "required": [
+                "need_merge",
+                "user_names"
+            ],
+            "properties": {
+                "need_merge": {
+                    "type": "boolean"
+                },
+                "user_names": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "handler.ResponseCaptchaGet": {
+            "type": "object",
+            "required": [
+                "img_data"
+            ],
+            "properties": {
+                "img_data": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ResponseCaptchaStatus": {
+            "type": "object",
+            "required": [
+                "is_pass"
+            ],
+            "properties": {
+                "is_pass": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "handler.ResponseCommentCreate": {
+            "type": "object",
+            "required": [
+                "badge_color",
+                "badge_name",
+                "content",
+                "content_marked",
+                "date",
+                "email_encrypted",
+                "id",
+                "ip_region",
+                "is_allow_reply",
+                "is_collapsed",
+                "is_pending",
+                "is_pinned",
+                "is_verified",
+                "link",
+                "nick",
+                "page_key",
+                "page_url",
+                "rid",
+                "site_name",
+                "ua",
+                "user_id",
+                "visible",
+                "vote_down",
+                "vote_up"
+            ],
+            "properties": {
+                "badge_color": {
+                    "type": "string"
+                },
+                "badge_name": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "content_marked": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "email_encrypted": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ip_region": {
+                    "type": "string"
+                },
+                "is_allow_reply": {
+                    "type": "boolean"
+                },
+                "is_collapsed": {
+                    "type": "boolean"
+                },
+                "is_pending": {
+                    "type": "boolean"
+                },
+                "is_pinned": {
+                    "type": "boolean"
+                },
+                "is_verified": {
+                    "type": "boolean"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "nick": {
+                    "type": "string"
+                },
+                "page_key": {
+                    "type": "string"
+                },
+                "page_url": {
+                    "type": "string"
+                },
+                "rid": {
+                    "type": "integer"
+                },
+                "site_name": {
+                    "type": "string"
+                },
+                "ua": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "visible": {
+                    "type": "boolean"
+                },
+                "vote_down": {
+                    "type": "integer"
+                },
+                "vote_up": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handler.ResponseCommentGet": {
+            "type": "object",
+            "required": [
+                "comment",
+                "reply_comment"
+            ],
+            "properties": {
+                "comment": {
+                    "description": "The comment detail",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/entity.CookedComment"
+                        }
+                    ]
+                },
+                "reply_comment": {
+                    "description": "The reply comment if exists (like reply)",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/entity.CookedComment"
+                        }
+                    ]
+                }
+            }
+        },
+        "handler.ResponseCommentList": {
+            "type": "object",
+            "required": [
+                "comments",
+                "count",
+                "page",
+                "roots_count"
+            ],
+            "properties": {
+                "comments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.CookedComment"
+                    }
+                },
+                "count": {
+                    "type": "integer"
+                },
+                "page": {
+                    "$ref": "#/definitions/entity.CookedPage"
+                },
+                "roots_count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handler.ResponseCommentUpdate": {
+            "type": "object",
+            "required": [
+                "badge_color",
+                "badge_name",
+                "content",
+                "content_marked",
+                "date",
+                "email_encrypted",
+                "id",
+                "ip_region",
+                "is_allow_reply",
+                "is_collapsed",
+                "is_pending",
+                "is_pinned",
+                "is_verified",
+                "link",
+                "nick",
+                "page_key",
+                "page_url",
+                "rid",
+                "site_name",
+                "ua",
+                "user_id",
+                "visible",
+                "vote_down",
+                "vote_up"
+            ],
+            "properties": {
+                "badge_color": {
+                    "type": "string"
+                },
+                "badge_name": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "content_marked": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "email_encrypted": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ip_region": {
+                    "type": "string"
+                },
+                "is_allow_reply": {
+                    "type": "boolean"
+                },
+                "is_collapsed": {
+                    "type": "boolean"
+                },
+                "is_pending": {
+                    "type": "boolean"
+                },
+                "is_pinned": {
+                    "type": "boolean"
+                },
+                "is_verified": {
+                    "type": "boolean"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "nick": {
+                    "type": "string"
+                },
+                "page_key": {
+                    "type": "string"
+                },
+                "page_url": {
+                    "type": "string"
+                },
+                "rid": {
+                    "type": "integer"
+                },
+                "site_name": {
+                    "type": "string"
+                },
+                "ua": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "visible": {
+                    "type": "boolean"
+                },
+                "vote_down": {
+                    "type": "integer"
+                },
+                "vote_up": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handler.ResponseConfAuthProviders": {
+            "type": "object",
+            "required": [
+                "anonymous",
+                "providers"
+            ],
+            "properties": {
+                "anonymous": {
+                    "type": "boolean"
+                },
+                "providers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/auth.AuthProviderInfo"
+                    }
+                }
+            }
+        },
+        "handler.ResponseConfDomain": {
+            "type": "object",
+            "required": [
+                "is_trusted",
+                "origin"
+            ],
+            "properties": {
+                "is_trusted": {
+                    "description": "Is the domain trusted",
+                    "type": "boolean"
+                },
+                "origin": {
+                    "description": "The origin of the domain",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ResponseNotifyList": {
+            "type": "object",
+            "required": [
+                "count",
+                "notifies"
+            ],
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "notifies": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.CookedNotify"
+                    }
+                }
+            }
+        },
+        "handler.ResponsePageFetch": {
+            "type": "object",
+            "required": [
+                "admin_only",
+                "date",
+                "id",
+                "key",
+                "pv",
+                "site_name",
+                "title",
+                "url",
+                "vote_down",
+                "vote_up"
+            ],
+            "properties": {
+                "admin_only": {
+                    "type": "boolean"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "pv": {
+                    "type": "integer"
+                },
+                "site_name": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "vote_down": {
+                    "type": "integer"
+                },
+                "vote_up": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handler.ResponsePageFetchStatus": {
+            "type": "object",
+            "required": [
+                "done",
+                "is_progress",
+                "msg",
+                "total"
+            ],
+            "properties": {
+                "done": {
+                    "description": "The number of pages that have been fetched",
+                    "type": "integer"
+                },
+                "is_progress": {
+                    "description": "If the task is in progress",
+                    "type": "boolean"
+                },
+                "msg": {
+                    "description": "The message of the task status",
+                    "type": "string"
+                },
+                "total": {
+                    "description": "The total number of pages",
+                    "type": "integer"
+                }
+            }
+        },
+        "handler.ResponsePageList": {
+            "type": "object",
+            "required": [
+                "count",
+                "pages"
+            ],
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "pages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.CookedPage"
+                    }
+                }
+            }
+        },
+        "handler.ResponsePagePV": {
+            "type": "object",
+            "required": [
+                "pv"
+            ],
+            "properties": {
+                "pv": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handler.ResponsePageUpdate": {
+            "type": "object",
+            "required": [
+                "admin_only",
+                "date",
+                "id",
+                "key",
+                "pv",
+                "site_name",
+                "title",
+                "url",
+                "vote_down",
+                "vote_up"
+            ],
+            "properties": {
+                "admin_only": {
+                    "type": "boolean"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "pv": {
+                    "type": "integer"
+                },
+                "site_name": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "vote_down": {
+                    "type": "integer"
+                },
+                "vote_up": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handler.ResponseSettingGet": {
+            "type": "object",
+            "required": [
+                "yaml"
+            ],
+            "properties": {
+                "yaml": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ResponseSettingTemplate": {
+            "type": "object",
+            "required": [
+                "yaml"
+            ],
+            "properties": {
+                "yaml": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ResponseSiteCreate": {
+            "type": "object",
+            "required": [
+                "first_url",
+                "id",
+                "name",
+                "urls",
+                "urls_raw"
+            ],
+            "properties": {
+                "first_url": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "urls": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "urls_raw": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ResponseSiteList": {
+            "type": "object",
+            "required": [
+                "count",
+                "sites"
+            ],
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "sites": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.CookedSite"
+                    }
+                }
+            }
+        },
+        "handler.ResponseSiteUpdate": {
+            "type": "object",
+            "required": [
+                "first_url",
+                "id",
+                "name",
+                "urls",
+                "urls_raw"
+            ],
+            "properties": {
+                "first_url": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "urls": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "urls_raw": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ResponseTransferExport": {
+            "type": "object",
+            "required": [
+                "artrans"
+            ],
+            "properties": {
+                "artrans": {
+                    "description": "The exported data which is a JSON string",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ResponseTransferUpload": {
+            "type": "object",
+            "required": [
+                "filename"
+            ],
+            "properties": {
+                "filename": {
+                    "description": "The uploaded file name which can be used to import",
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ResponseUpload": {
+            "type": "object",
+            "required": [
+                "file_name",
+                "file_type",
+                "public_url"
+            ],
+            "properties": {
+                "file_name": {
+                    "type": "string"
+                },
+                "file_type": {
+                    "type": "string"
+                },
+                "public_url": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ResponseUserCreate": {
+            "type": "object",
+            "required": [
+                "badge_color",
+                "badge_name",
+                "comment_count",
+                "email",
+                "id",
+                "is_admin",
+                "is_in_conf",
+                "last_ip",
+                "last_ua",
+                "link",
+                "name",
+                "receive_email"
+            ],
+            "properties": {
+                "badge_color": {
+                    "type": "string"
+                },
+                "badge_name": {
+                    "type": "string"
+                },
+                "comment_count": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_admin": {
+                    "type": "boolean"
+                },
+                "is_in_conf": {
+                    "type": "boolean"
+                },
+                "last_ip": {
+                    "type": "string"
+                },
+                "last_ua": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "receive_email": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "handler.ResponseUserInfo": {
+            "type": "object",
+            "required": [
+                "is_login",
+                "notifies",
+                "notifies_count",
+                "user"
+            ],
+            "properties": {
+                "is_login": {
+                    "type": "boolean"
+                },
+                "notifies": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.CookedNotify"
+                    }
+                },
+                "notifies_count": {
+                    "type": "integer"
+                },
+                "user": {
+                    "$ref": "#/definitions/entity.CookedUser"
+                }
+            }
+        },
+        "handler.ResponseUserLogin": {
+            "type": "object",
+            "required": [
+                "token",
+                "user"
+            ],
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/entity.CookedUser"
+                }
+            }
+        },
+        "handler.ResponseUserStatus": {
+            "type": "object",
+            "required": [
+                "is_admin",
+                "is_login"
+            ],
+            "properties": {
+                "is_admin": {
+                    "type": "boolean"
+                },
+                "is_login": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "handler.ResponseUserUpdate": {
+            "type": "object",
+            "required": [
+                "badge_color",
+                "badge_name",
+                "comment_count",
+                "email",
+                "id",
+                "is_admin",
+                "is_in_conf",
+                "last_ip",
+                "last_ua",
+                "link",
+                "name",
+                "receive_email"
+            ],
+            "properties": {
+                "badge_color": {
+                    "type": "string"
+                },
+                "badge_name": {
+                    "type": "string"
+                },
+                "comment_count": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_admin": {
+                    "type": "boolean"
+                },
+                "is_in_conf": {
+                    "type": "boolean"
+                },
+                "last_ip": {
+                    "type": "string"
+                },
+                "last_ua": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "receive_email": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "handler.ResponseVote": {
+            "type": "object",
+            "required": [
+                "down",
+                "up"
+            ],
+            "properties": {
+                "down": {
+                    "type": "integer"
+                },
+                "up": {
+                    "type": "integer"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "description": "\"Type 'Bearer TOKEN' to correctly set the API Key\"",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

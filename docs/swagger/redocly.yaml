@@ -1,0 +1,23 @@
+organization: Artalk
+
+extends:
+  - recommended
+
+apis:
+  artalk@v2:
+    root: ./swagger.json
+
+theme:
+  openapi:
+    schemaExpansionLevel: 2
+    defaultSampleLanguage: curl
+    hideLogo: true
+    generateCodeSamples:
+      languages:
+        - lang: curl
+        - lang: Python
+        - lang: Go
+        - lang: Node.js
+        - lang: JavaScript
+        - lang: PHP
+        - lang: Java

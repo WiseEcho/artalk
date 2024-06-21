@@ -1,0 +1,20 @@
+{
+  "name": "docs-swagger",
+  "version": "2.0.0",
+  "description": "Artalk documentation",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArtalkJS/Artalk",
+    "directory": "docs/swagger"
+  },
+  "private": true,
+  "scripts": {
+    "swagger:build": "npx @redocly/cli build-docs --output ./dist/http-api.html",
+    "swagger:serve": "npx @redocly/cli preview-docs",
+    "swagger:build-http-client": "npx swagger-typescript-api -n v2 -p ./swagger.json -o ../../ui/artalk/src/api --responses --sort-types"
+  },
+  "devDependencies": {
+    "@redocly/cli": "1.12.0"
+  }
+}

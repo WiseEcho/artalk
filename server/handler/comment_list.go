@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/ArtalkJS/Artalk/internal/core"
 	"github.com/ArtalkJS/Artalk/internal/dao"
@@ -9,6 +10,7 @@ import (
 	"github.com/ArtalkJS/Artalk/internal/log"
 	"github.com/ArtalkJS/Artalk/server/common"
 	cog "github.com/ArtalkJS/Artalk/server/handler/comments_get"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/samber/lo"
 )
@@ -117,6 +119,18 @@ func CommentList(app *core.App, router fiber.Router) {
 		// Get IP region
 		comments = findIPRegionForComments(app, comments)
 
+		// 填充评论头像
+		for i := range comments {
+			avatar := comments[i].Avatar
+			if avatar == "" {
+				avatar = "https://oss.zhimeizhuli.com/files/images/avatar.png"
+			}
+
+			if !strings.HasPrefix(avatar, "http") {
+				avatar = common.GetOpenURLByKey(avatar, app.Conf())
+			}
+			comments[i].Avatar = avatar
+		}
 		// The response data
 		resp := ResponseCommentList{
 			Comments:   comments,

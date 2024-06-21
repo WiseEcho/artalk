@@ -38,6 +38,7 @@ func (dao *Dao) CookComment(c *entity.Comment) entity.CookedComment {
 		ContentMarked:  markedContent,
 		UserID:         c.UserID,
 		Nick:           user.Name,
+		Avatar:         user.Avatar,
 		EmailEncrypted: utils.GetSha256Hash(user.Email),
 		Link:           user.Link,
 		UA:             c.UA,

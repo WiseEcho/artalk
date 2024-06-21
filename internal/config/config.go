@@ -30,7 +30,7 @@ type Config struct {
 	AdminNotify    AdminNotifyConf        `koanf:"admin_notify" json:"admin_notify"`       // 其他通知方式
 	Auth           AuthConf               `koanf:"auth" json:"auth"`                       // Social Login
 	Frontend       map[string]interface{} `koanf:"frontend" json:"frontend"`
-
+	FS             string                 `koanf:"fs" json:"fs"` // 文件服务地址
 	// deprecated options
 	// (only for unmarshal, please not reference)
 	// ---------------------------

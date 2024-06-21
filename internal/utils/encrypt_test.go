@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -20,6 +21,7 @@ func TestGetMD5Hash(t *testing.T) {
 		result := GetMD5Hash(test.input)
 		assert.Equal(t, test.expected, result)
 	}
+	fmt.Println(GetMD5Hash("123456"))
 }
 
 func TestGetSha256Hash(t *testing.T) {

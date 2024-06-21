@@ -6,7 +6,7 @@ export interface ApiOptions {
   pageKey: string
   pageTitle: string
   timeout?: number
-  getApiToken?: () => string | undefined
+  getApiToken?: string
   userInfo?: {
     name: string
     email: string

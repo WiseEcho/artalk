@@ -8,7 +8,7 @@ export const Fetch = async (
   input: string | URL | Request,
   init?: RequestInit,
 ) => {
-  const apiToken = opts.getApiToken && opts.getApiToken()
+  const apiToken = opts.getApiToken || ''
 
   const headers = new Headers({
     Authorization: apiToken ? `Bearer ${apiToken}` : '',

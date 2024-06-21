@@ -87,13 +87,21 @@ export function handleConfFormServer(conf: Partial<ArtalkConfig>) {
  * @returns ApiOptions for Api client instance creation
  */
 export function convertApiOptions(conf: Partial<ArtalkConfig>, ctx?: ContextApi): ApiOptions {
+  let json = ''
+  let storageData = ''
+  try {
+    json = window.localStorage.getItem('SECRET_TOKEN') || ''
+    storageData = JSON.parse(json).data
+  } catch {
+    // Prevent failure
+  }
   return {
     baseURL: `${conf.server}/api/v2`,
     siteName: conf.site || '',
     pageKey: conf.pageKey || '',
     pageTitle: conf.pageTitle || '',
     timeout: conf.reqTimeout,
-    getApiToken: () => ctx?.get('user').getData().token,
+    getApiToken: storageData || '',
     userInfo: ctx?.get('user').checkHasBasicUserInfo()
       ? {
           name: ctx?.get('user').getData().nick,

@@ -291,6 +291,6 @@ func (dao *Dao) GetVercaniumUserInfo(id uint) (entity.VercaniumUser, error) {
 		fields = "id,tel,username,email,alias,avatar"
 	)
 
-	err := dao.DB().Table("vercanium.user").Select(fields).Where("id = ?", id).Scan(&user).Error
+	err := dao.DB().Table("vercanium.users").Select(fields).Where("id = ?", id).Scan(&user).Error
 	return user, err
 }

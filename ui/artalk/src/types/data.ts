@@ -2,7 +2,7 @@ export interface CommentData {
   /** 评论 ID */
   id: number
   // 头像
-  avatar: string
+  avatar?: string
   /** 评论正文 */
   content: string
 

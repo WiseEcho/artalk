@@ -139,14 +139,14 @@ export default class Render {
   }
 
   /** 设置为可点击的评论 */
-  // public setOpenable(val: boolean) {
-  //   if (val) this.$el.classList.add('atk-openable')
-  //   else this.$el.classList.remove('atk-openable')
-  // }
+  public setOpenable(val: boolean) {
+    if (val) this.$el.classList.add('atk-openable')
+    else this.$el.classList.remove('atk-openable')
+  }
 
   /** 设置点击评论打开置顶 URL */
   public setOpenURL(url: string) {
-    // this.setOpenable(true)
+    this.setOpenable(true)
     this.$el.onclick = (evt) => {
       evt.stopPropagation()
       window.open(url)
@@ -155,7 +155,7 @@ export default class Render {
 
   /** 设置点击评论时的操作 */
   public setOpenAction(action: () => void) {
-    // this.setOpenable(true)
+    this.setOpenable(true)
     this.$el.onclick = (evt) => {
       evt.stopPropagation()
       action()

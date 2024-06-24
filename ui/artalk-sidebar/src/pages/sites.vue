@@ -134,8 +134,7 @@ function onSiteItemRemove(id: number) {
 <style scoped lang="scss">
 .atk-site-list {
   & > .atk-header {
-    display: flex;
-    flex-direction: row;
+    display: none;
     padding: 15px 30px;
     align-items: center;
 
@@ -234,9 +233,9 @@ function onSiteItemRemove(id: number) {
     margin-bottom: -10px;
 
     .atk-header {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
+      display: none;
+      // flex-direction: row;
+      // align-items: center;
       padding: 10px 30px 0 35px;
       justify-content: space-between;
 
@@ -333,6 +332,7 @@ function onSiteItemRemove(id: number) {
     position: relative;
 
     .atk-header {
+      display: none;
       .atk-title {
         font-size: 20px;
       }
